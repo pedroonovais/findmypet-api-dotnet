@@ -6,8 +6,9 @@ namespace library.Model
     public class Sensor
     {
         [Key]
-        public Guid id { get; set; }
-     
+        public Guid idSensor { get; set; }
+
+        [MaxLength(15)]
         public required string tipoSensor { get; set; }
 
         public required decimal latitude { get; set; }
