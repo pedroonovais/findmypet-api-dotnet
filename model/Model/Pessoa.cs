@@ -11,7 +11,7 @@ namespace library.Model
     {
         [Key]
         public Guid idPessoa { get; set; }
-        public required string nome { get; set; }
+        public required string nomePessoa { get; set; }
         
         public required string telefone { get; set; }
 

@@ -13,21 +13,14 @@ namespace library.Model
         [Key]
         public Guid idAdocao { get; set; }
 
-        public int idPessoa { get; set; }
+        public Guid idPessoa { get; set; }
 
-        [ForeignKey("idPessoa")]
-        public Pessoa pessoa { get; set; }
-
-        public int idAnimal { get; set; }
-
-        [ForeignKey("idAnimal")]
-        public Animal animal { get; set; }
+        public Guid idAnimal { get; set; }
 
         public DateTime dataAdocao { get; set; }
 
         [MaxLength(15)]
         public string tipoAdocao { get; set; }
-
 
     }
 }

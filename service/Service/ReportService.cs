@@ -22,7 +22,7 @@ namespace service.Service
             return _context.Report.ToList();
         }
 
-        public Report? GetById(int id)
+        public Report? GetById(Guid id)
         {
             return _context.Report.FirstOrDefault(r => r.idReport == id);
         }
@@ -32,13 +32,24 @@ namespace service.Service
             if (report == null)
                 throw new ArgumentNullException(nameof(report));
 
-            // Para int auto-incrementado, não é necessário atribuir idReport.
+            // Gera um novo Guid para idReport
+            report.idReport = Guid.NewGuid();
+
+            // Validação mínima das FKs (todas são Guid)
+            if (report.idPessoa == Guid.Empty ||
+                report.idAnimal == Guid.Empty ||
+                report.idLocal == Guid.Empty ||
+                report.idSensor == Guid.Empty)
+            {
+                throw new ArgumentException("Uma ou mais chaves estrangeiras estão inválidas.");
+            }
+
             _context.Report.Add(report);
             _context.SaveChanges();
             return report;
         }
 
-        public bool Delete(int id)
+        public bool Delete(Guid id)
         {
             var report = GetById(id);
             if (report == null)
@@ -49,11 +60,20 @@ namespace service.Service
             return true;
         }
 
-        public Report? Update(int id, Report reportAtualizado)
+        public Report? Update(Guid id, Report reportAtualizado)
         {
             var existente = _context.Report.FirstOrDefault(r => r.idReport == id);
             if (existente == null)
                 return null;
+
+            // Validação mínima das FKs (todas são Guid)
+            if (reportAtualizado.idPessoa == Guid.Empty ||
+                reportAtualizado.idAnimal == Guid.Empty ||
+                reportAtualizado.idLocal == Guid.Empty ||
+                reportAtualizado.idSensor == Guid.Empty)
+            {
+                throw new ArgumentException("Uma ou mais chaves estrangeiras estão inválidas.");
+            }
 
             existente.idPessoa = reportAtualizado.idPessoa;
             existente.idAnimal = reportAtualizado.idAnimal;

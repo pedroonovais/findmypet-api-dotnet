@@ -12,7 +12,7 @@ namespace library.Model
         [Key]
         public Guid idAnimal { get; set; }
 
-        public required string nome { get; set; }
+        public required string nomeAnimal { get; set; }
 
         public required string especie { get; set; }
 

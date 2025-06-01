@@ -7,21 +7,23 @@ namespace data.Context
     public class AppDbContext : DbContext
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
-        public DbSet<Moto> Moto { get; set; }
-        public DbSet<Patio> Patio { get; set; }
-        public DbSet<Usuario> Usuario { get; set; }
+        public DbSet<Adocao> Adocao { get; set; }
+        public DbSet<Animal> Animal { get; set; }
+        public DbSet<Local> Local { get; set; }
         public DbSet<Sensor> Sensor { get; set; }
-        public DbSet<LeituraRfid> LeituraRfid { get; set; }
-
+        public DbSet<Pessoa> Pessoa { get; set; }
+        public DbSet<Report> Report { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            builder.Entity<Moto>().ToTable("MOTO");
-            builder.Entity<Patio>().ToTable("PATIO");
-            builder.Entity<Usuario>().ToTable("USUARIO");
-            builder.Entity<Sensor>().ToTable("SENSOR");
-            builder.Entity<LeituraRfid>().ToTable("LEITURARFID");
+
+            builder.Entity<Adocao>().ToTable("TB_ADOCAO");
+            builder.Entity<Animal>().ToTable("TB_ANIMAL");
+            builder.Entity<Local>().ToTable("TB_LOCAL");
+            builder.Entity<Sensor>().ToTable("TB_SENSOR");
+            builder.Entity<Pessoa>().ToTable("TB_PESSOA");
+            builder.Entity<Report>().ToTable("TB_REPORT");
 
             // Corrige tipo BOOLEAN para Oracle (usa NUMBER(1))
             foreach (var entityType in builder.Model.GetEntityTypes())

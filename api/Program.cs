@@ -7,11 +7,12 @@ using System.Reflection;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddScoped<MotoService>();
-builder.Services.AddScoped<PatioService>();
-builder.Services.AddScoped<UsuarioService>();
+builder.Services.AddScoped<AdocaoService>();
+builder.Services.AddScoped<AnimalService>();
+builder.Services.AddScoped<LocalService>();
+builder.Services.AddScoped<PessoaService>();
+builder.Services.AddScoped<ReportService>();
 builder.Services.AddScoped<SensorService>();
-builder.Services.AddScoped<LeituraRfidService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -24,9 +25,9 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v2", new OpenApiInfo
     {
-        Title = "TechLab API",
+        Title = "FindMyPet API",
         Version = "v1",
-        Description = "API do sistema de gerenciamento de Pátios da TechLab",
+        Description = "API do FindMyPet, uma plataforma de adocao de animais em situações de tragedias",
         Contact = new OpenApiContact
         {
             Name = "Pedro Novais",
@@ -50,7 +51,7 @@ if (app.Environment.IsDevelopment())
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
-    c.SwaggerEndpoint("/swagger/v2/swagger.json", "TechLab API v1");
+    c.SwaggerEndpoint("/swagger/v2/swagger.json", "FindMyPet API v1");
     c.RoutePrefix = string.Empty;
 });
 

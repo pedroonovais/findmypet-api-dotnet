@@ -55,7 +55,7 @@ namespace service.Service
             if (existente == null)
                 return null;
 
-            existente.nome = animalAtualizado.nome;
+            existente.nomeAnimal = animalAtualizado.nomeAnimal;
             existente.especie = animalAtualizado.especie;
             existente.porte = animalAtualizado.porte;
             existente.idadeEstimada = animalAtualizado.idadeEstimada;

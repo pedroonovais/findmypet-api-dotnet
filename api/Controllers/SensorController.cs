@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using library.Model;
+using Microsoft.AspNetCore.Mvc;
 using service.Service;
-using library.Model;
 
 namespace api.Controllers
 {
@@ -32,12 +32,17 @@ namespace api.Controllers
         /// </summary>
         /// <param name="id">ID do sensor.</param>
         /// <response code="200">Sensor encontrado.</response>
+        /// <response code="400">ID inválido.</response>
         /// <response code="404">Sensor não encontrado.</response>
-        [HttpGet("{id}")]
+        [HttpGet("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult GetById(Guid id)
         {
+            if (id == Guid.Empty)
+                return BadRequest("ID inválido.");
+
             var sensor = _service.GetById(id);
             if (sensor == null)
                 return NotFound();
@@ -56,13 +61,17 @@ namespace api.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult Post([FromBody] Sensor sensor)
         {
-            if (sensor == null || string.IsNullOrWhiteSpace(sensor.tipo) || string.IsNullOrWhiteSpace(sensor.localizacaoFisica))
+            if (sensor == null
+                || sensor.idSensor == Guid.Empty // Garante que não esteja vazio
+                || string.IsNullOrWhiteSpace(sensor.tipoSensor)  // valida tipoSensor obrigatório :contentReference[oaicite:0]{index=0}
+                || sensor.latitude == 0   // latitude e longitude são required no modelo :contentReference[oaicite:1]{index=1}
+                || sensor.longitude == 0)
             {
                 return BadRequest("Dados inválidos.");
             }
 
             var newSensor = _service.Create(sensor);
-            return CreatedAtAction(nameof(GetById), new { id = newSensor.id }, newSensor);
+            return CreatedAtAction(nameof(GetById), new { id = newSensor.idSensor }, newSensor);
         }
 
         /// <summary>
@@ -73,20 +82,27 @@ namespace api.Controllers
         /// <response code="200">Sensor atualizado com sucesso.</response>
         /// <response code="400">Dados inválidos.</response>
         /// <response code="404">Sensor não encontrado.</response>
-        [HttpPut("{id}")]
+        [HttpPut("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult Put(Guid id, [FromBody] Sensor sensor)
         {
-            if (sensor == null || id == Guid.Empty || sensor.id != id)
+            if (sensor == null
+                || id == Guid.Empty
+                || sensor.idSensor != id
+                || string.IsNullOrWhiteSpace(sensor.tipoSensor)  // valida tipoSensor obrigatório :contentReference[oaicite:2]{index=2}
+                || sensor.latitude == 0
+                || sensor.longitude == 0)
+            {
                 return BadRequest("Dados inválidos.");
+            }
 
             var updated = _service.Update(id, sensor);
-            if (!updated)
+            if (updated == null)
                 return NotFound();
 
-            return Ok(sensor);
+            return Ok(updated);
         }
 
         /// <summary>
@@ -96,7 +112,7 @@ namespace api.Controllers
         /// <response code="204">Sensor removido com sucesso.</response>
         /// <response code="400">ID inválido.</response>
         /// <response code="404">Sensor não encontrado.</response>
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

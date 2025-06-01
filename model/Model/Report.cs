@@ -11,23 +11,15 @@ namespace library.Model
     public class Report
     {
         [Key]
-        public int idReport { get; set; }
+        public Guid idReport { get; set; }
 
-        public int idPessoa { get; set; }
-        [ForeignKey("PessoaId")]
-        public Pessoa pessoa { get; set; }
+        public Guid idPessoa { get; set; }
 
-        public int idAnimal { get; set; }
-        [ForeignKey("idAnimal")]
-        public Animal animal { get; set; }
+        public Guid idAnimal { get; set; }
 
-        public int idLocal { get; set; }
-        [ForeignKey("idLocal")]
-        public Local local { get; set; }
+        public Guid idLocal { get; set; }
 
-        public int idSensor { get; set; }
-        [ForeignKey("idSensor")]
-        public Sensor sensor { get; set; }
+        public Guid idSensor { get; set; }
 
         public DateTime dataReport { get; set; }
 

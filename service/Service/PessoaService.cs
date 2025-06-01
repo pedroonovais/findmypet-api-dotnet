@@ -55,7 +55,7 @@ namespace service.Service
             if (existente == null)
                 return null;
 
-            existente.nome = pessoaAtualizada.nome;
+            existente.nomePessoa = pessoaAtualizada.nomePessoa;
             existente.telefone = pessoaAtualizada.telefone;
             existente.tipoPessoa = pessoaAtualizada.tipoPessoa;
             existente.cpf = pessoaAtualizada.cpf;
