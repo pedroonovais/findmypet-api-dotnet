@@ -1,6 +1,10 @@
 ﻿using data.Context;
 using library.Model;
-using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace service.Service
 {
@@ -20,7 +24,7 @@ namespace service.Service
 
         public Sensor? GetById(Guid id)
         {
-            return _context.Sensor.Find(id);
+            return _context.Sensor.FirstOrDefault(s => s.idSensor == id);
         }
 
         public Sensor Create(Sensor sensor)
@@ -28,28 +32,10 @@ namespace service.Service
             if (sensor == null)
                 throw new ArgumentNullException(nameof(sensor));
 
-            sensor.id = Guid.NewGuid();
-            sensor.dtInstalacao = DateTime.UtcNow;
-            sensor.dtUltimaLeitura = DateTime.UtcNow;
-
+            sensor.idSensor = Guid.NewGuid();
             _context.Sensor.Add(sensor);
             _context.SaveChanges();
             return sensor;
-        }
-
-        public bool Update(Guid id, Sensor updatedSensor)
-        {
-            var existing = GetById(id);
-            if (existing == null)
-                return false;
-
-            updatedSensor.id = id;
-            updatedSensor.dtUltimaLeitura = DateTime.UtcNow;
-
-            _context.Entry(existing).State = EntityState.Detached;
-            _context.Sensor.Update(updatedSensor);
-            _context.SaveChanges();
-            return true;
         }
 
         public bool Delete(Guid id)
@@ -61,6 +47,21 @@ namespace service.Service
             _context.Sensor.Remove(sensor);
             _context.SaveChanges();
             return true;
+        }
+
+        public Sensor? Update(Guid id, Sensor sensorAtualizado)
+        {
+            var existente = _context.Sensor.FirstOrDefault(s => s.idSensor == id);
+            if (existente == null)
+                return null;
+
+            existente.tipoSensor = sensorAtualizado.tipoSensor;
+            existente.latitude = sensorAtualizado.latitude;
+            existente.longitude = sensorAtualizado.longitude;
+            existente.ativo = sensorAtualizado.ativo;
+
+            _context.SaveChanges();
+            return existente;
         }
     }
 }
