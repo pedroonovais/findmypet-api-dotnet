@@ -140,6 +140,7 @@ https://localhost:{porta}/swagger
 
 ---
 
+::: mermaid
 flowchart LR
   subgraph Cliente
     Browser[Usuário (Browser)]
@@ -168,3 +169,6 @@ flowchart LR
   Services --> Model
   Services --> Data
   Data --> Database
+
+
+:::
