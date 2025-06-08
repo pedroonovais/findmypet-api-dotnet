@@ -142,33 +142,148 @@ https://localhost:{porta}/swagger
 
 ## 📊 Diagrama da Arquitetura
 
-## 📊 Diagrama da Arquitetura
-
 ```mermaid
-flowchart LR
-  Browser[Usuario (Browser)]
+classDiagram
+    direction TB
 
-  subgraph WebMvc
-    MVC[Controllers & Views]
-    HTTPClient[HttpClient (ApiSettings)]
-  end
+    %% === ENTIDADES DE DOMÍNIO ===
+    class Animal {
+        +int Id
+        +string Nome
+        +string Especie
+        +string Raca
+        +string Sexo
+        +int Idade
+        +bool Disponivel
+        +int PessoaId
+        +Pessoa Responsavel
+        +List~Adocao~ Adocoes
+    }
 
-  subgraph API
-    APIControllers[Controllers: Adocao, Animal, Pessoa, Local, Sensor, Report]
-    APIServices[Services: AdocaoService, AnimalService, PessoaService, LocalService, SensorService, ReportService]
-  end
+    class Pessoa {
+        +int Id
+        +string Nome
+        +string Email
+        +string Telefone
+        +List~Animal~ Animais
+        +List~Adocao~ Adocoes
+    }
 
-  subgraph Dominio
-    Model[Entidades: Animal, Pessoa, Local, Sensor, Report, Adocao]
-    Data[EF Core: AppDbContext]
-    Database[(SQL Server)]
-  end
+    class Adocao {
+        +int Id
+        +int AnimalId
+        +int PessoaId
+        +DateTime DataAdocao
+        +Animal Animal
+        +Pessoa Pessoa
+    }
 
-  Browser --> MVC
-  MVC --> HTTPClient
-  HTTPClient --> APIControllers
-  APIControllers --> APIServices
-  APIServices --> Model
-  APIServices --> Data
-  Data --> Database
+    class Sensor {
+        +int Id
+        +string Codigo
+        +string Tipo
+        +int AnimalId
+        +Animal Animal
+    }
+
+    class Local {
+        +int Id
+        +string Descricao
+        +double Latitude
+        +double Longitude
+        +DateTime DataRegistro
+        +int SensorId
+        +Sensor Sensor
+    }
+
+    class Report {
+        +int Id
+        +string Tipo
+        +DateTime DataGeracao
+        +string Conteudo
+    }
+
+    %% === DB CONTEXT ===
+    class AppDbContext {
+        +DbSet~Animal~ Animais
+        +DbSet~Pessoa~ Pessoas
+        +DbSet~Adocao~ Adocoes
+        +DbSet~Sensor~ Sensores
+        +DbSet~Local~ Locais
+        +DbSet~Report~ Relatorios
+    }
+
+    %% === INTERFACES DE SERVIÇO ===
+    class IAnimalService
+    class IPessoaService
+    class IAdocaoService
+    class ISensorService
+    class ILocalService
+    class IReportService
+
+    %% === IMPLEMENTAÇÕES DE SERVIÇO ===
+    class AnimalService {
+        -AppDbContext _context
+    }
+
+    class PessoaService {
+        -AppDbContext _context
+    }
+
+    class AdocaoService {
+        -AppDbContext _context
+    }
+
+    class SensorService {
+        -AppDbContext _context
+    }
+
+    class LocalService {
+        -AppDbContext _context
+    }
+
+    class ReportService {
+        -AppDbContext _context
+    }
+
+    %% === CONTROLLERS ===
+    class AnimalController
+    class PessoaController
+    class AdocaoController
+    class SensorController
+    class LocalController
+    class ReportController
+
+    %% === RELACIONAMENTOS ENTRE ENTIDADES ===
+    Pessoa "1" --> "*" Animal : possui
+    Pessoa "1" --> "*" Adocao : realiza
+    Animal "1" --> "*" Adocao : é adotado em
+    Animal "1" --> "0..1" Sensor : possui
+    Sensor "1" --> "*" Local : registra
+
+    %% === DB CONTEXT RELATIONS ===
+    AppDbContext --> Animal
+    AppDbContext --> Pessoa
+    AppDbContext --> Adocao
+    AppDbContext --> Sensor
+    AppDbContext --> Local
+    AppDbContext --> Report
+
+    %% === SERVICES E INTERFACES ===
+    AnimalService ..|> IAnimalService
+    PessoaService ..|> IPessoaService
+    AdocaoService ..|> IAdocaoService
+    SensorService ..|> ISensorService
+    LocalService ..|> ILocalService
+    ReportService ..|> IReportService
+
+    %% === CONTROLLERS PARA SERVIÇOS ===
+    AnimalController --> IAnimalService
+    PessoaController --> IPessoaService
+    AdocaoController --> IAdocaoService
+    SensorController --> ISensorService
+    LocalController --> ILocalService
+    ReportController --> IReportService
+
+
 ```
