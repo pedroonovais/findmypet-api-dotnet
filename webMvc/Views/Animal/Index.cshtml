@@ -1,0 +1,36 @@
+﻿@model List<AnimalViewModel>
+
+<h2>Lista de Animais</h2>
+
+<a asp-action="Create" class="btn btn-success mb-3">Novo Animal</a>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Id Animal</th>
+            <th>Nome</th>
+            <th>Espécie</th>
+            <th>Porte</th>
+            <th>Idade Estimada</th>
+            <th>Status</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.IdAnimal</td>
+                <td>@item.NomeAnimal</td>
+                <td>@item.Especie</td>
+                <td>@item.Porte</td>
+                <td>@item.IdadeEstimada</td>
+                <td>@item.Status</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.IdAnimal" class="btn btn-primary btn-sm">Editar</a>
+                    <a asp-action="Delete" asp-route-id="@item.IdAnimal" class="btn btn-danger btn-sm" onclick="return confirm('Confirma exclusão?');">Excluir</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

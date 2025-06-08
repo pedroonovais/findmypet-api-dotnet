@@ -1,0 +1,40 @@
+﻿@model List<ReportViewModel>
+
+<h2>Lista de Reports</h2>
+
+<a asp-action="Create" class="btn btn-success mb-3">Novo Report</a>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Id Report</th>
+            <th>Id Pessoa</th>
+            <th>Id Animal</th>
+            <th>Id Local</th>
+            <th>Id Sensor</th>
+            <th>Data Report</th>
+            <th>Descrição Local</th>
+            <th>Status</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.IdReport</td>
+                <td>@item.IdPessoa</td>
+                <td>@item.IdAnimal</td>
+                <td>@item.IdLocal</td>
+                <td>@item.IdSensor</td>
+                <td>@item.DataReport.ToString("yyyy-MM-dd HH:mm")</td>
+                <td>@item.DescricaoLocal</td>
+                <td>@item.StatusReport</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.IdReport" class="btn btn-primary btn-sm">Editar</a>
+                    <a asp-action="Delete" asp-route-id="@item.IdReport" class="btn btn-danger btn-sm" onclick="return confirm('Confirma exclusão?');">Excluir</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

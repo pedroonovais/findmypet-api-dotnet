@@ -1,0 +1,25 @@
+﻿@model AdocaoViewModel
+
+<h2>Editar Adoção</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="IdAdocao" />
+    <div class="form-group">
+        <label asp-for="IdPessoa"></label>
+        <input asp-for="IdPessoa" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="IdAnimal"></label>
+        <input asp-for="IdAnimal" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="DataAdocao"></label>
+        <input asp-for="DataAdocao" type="datetime-local" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="TipoAdocao"></label>
+        <input asp-for="TipoAdocao" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>

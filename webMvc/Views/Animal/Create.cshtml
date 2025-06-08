@@ -1,0 +1,28 @@
+﻿@model AnimalViewModel
+
+<h2>Novo Animal</h2>
+
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label asp-for="NomeAnimal"></label>
+        <input asp-for="NomeAnimal" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Especie"></label>
+        <input asp-for="Especie" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Porte"></label>
+        <input asp-for="Porte" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="IdadeEstimada"></label>
+        <input asp-for="IdadeEstimada" type="number" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Status"></label>
+        <input asp-for="Status" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-success">Salvar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>
