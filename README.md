@@ -142,31 +142,33 @@ https://localhost:{porta}/swagger
 
 ## 📊 Diagrama da Arquitetura
 
+## 📊 Diagrama da Arquitetura
+
 ```mermaid
 flowchart LR
-  subgraph Cliente
-    browser[Usuario (Browser)]
+  Browser[Usuario (Browser)]
+
+  subgraph WebMvc
+    MVC[Controllers & Views]
+    HTTPClient[HttpClient (ApiSettings)]
   end
 
-  subgraph WebMVC["Web MVC (webMvc)"]
-    mvc[Controllers & Views]
-    httpclient[HttpClient (ApiSettings)]
+  subgraph API
+    APIControllers[Controllers: Adocao, Animal, Pessoa, Local, Sensor, Report]
+    APIServices[Services: AdocaoService, AnimalService, PessoaService, LocalService, SensorService, ReportService]
   end
 
-  subgraph API["API (api)"]
-    controllers[Controllers (Adocao, Animal, Pessoa, Local, Sensor, Report)]
-    services[Servicos (AdocaoService, AnimalService, PessoaService, LocalService, SensorService, ReportService)]
+  subgraph Dominio
+    Model[Entidades: Animal, Pessoa, Local, Sensor, Report, Adocao]
+    Data[EF Core: AppDbContext]
+    Database[(SQL Server)]
   end
 
-  subgraph Dominio["Modelo e Persistencia"]
-    model[Entidades (Animal, Pessoa, Local, Sensor, Report, Adocao)]
-    data[Contexto EF Core (AppDbContext)]
-    database[(SQL Server)]
-  end
-
-  browser --> mvc
-  mvc -->|REST API| httpclient --> controllers
-  controllers --> services
-  services --> model
-  services --> data
-  data --> database
+  Browser --> MVC
+  MVC --> HTTPClient
+  HTTPClient --> APIControllers
+  APIControllers --> APIServices
+  APIServices --> Model
+  APIServices --> Data
+  Data --> Database
+```
